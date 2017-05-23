@@ -1,0 +1,250 @@
+{
+	"sheets": [
+		{
+			"name": "enemies",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "name"
+				},
+				{
+					"typeStr": "7",
+					"name": "pic",
+					"display": null
+				},
+				{
+					"typeStr": "13",
+					"name": "image",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "yoffset",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "hp"
+				},
+				{
+					"typeStr": "4",
+					"name": "ap",
+					"display": 1
+				},
+				{
+					"typeStr": "5:Upper,Bottom",
+					"name": "direction",
+					"display": null
+				},
+				{
+					"typeStr": "5:Normal,Hard,VeryHard,Skull,Skull2",
+					"name": "block"
+				},
+				{
+					"typeStr": "3",
+					"name": "count"
+				},
+				{
+					"typeStr": "3",
+					"name": "extval"
+				},
+				{
+					"typeStr": "1",
+					"name": "comment",
+					"opt": true,
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"hp": 100,
+					"name": "プレイヤー",
+					"pic": "16aaf7effe681f8a4d382674f7ec90de",
+					"image": "../../../../assets/images/player.png",
+					"block": 0,
+					"direction": 0,
+					"id": "Player",
+					"count": 0,
+					"ap": 0,
+					"yoffset": 0,
+					"extval": 0
+				},
+				{
+					"hp": 30,
+					"name": "スライム",
+					"pic": "57300b7471f4b9f63ac276ad51849b14",
+					"image": "../../../../assets/images/enemies/pipo-enemy009.png",
+					"block": 0,
+					"direction": 0,
+					"id": "Slime",
+					"count": 3,
+					"ap": 0.2,
+					"yoffset": 16,
+					"extval": 0
+				},
+				{
+					"id": "SlimeRed",
+					"name": "レッドスライム",
+					"pic": "95d2da899d3e647b9cc481869b5624b0",
+					"image": "../../../../assets/images/enemies/pipo-enemy009a.png",
+					"hp": 50,
+					"direction": 0,
+					"block": 0,
+					"count": 3,
+					"ap": 0.2,
+					"yoffset": 16,
+					"extval": 0
+				},
+				{
+					"name": "コウモリ",
+					"pic": "5f18084f1f042d9ee964323f9cb31274",
+					"image": "../../../../assets/images/enemies/pipo-enemy001.png",
+					"hp": 30,
+					"block": 3,
+					"direction": 0,
+					"id": "Bat",
+					"count": 3,
+					"ap": 0.3,
+					"yoffset": 0,
+					"extval": 0
+				},
+				{
+					"id": "BatRed",
+					"name": "レッドコウモリ",
+					"pic": "b72e2e3dfbab1a321cae006232fc1683",
+					"image": "../../../../assets/images/enemies/pipo-enemy001a.png",
+					"hp": 50,
+					"direction": 0,
+					"block": 0,
+					"count": 3,
+					"ap": 0.3,
+					"yoffset": 0,
+					"extval": 0
+				},
+				{
+					"id": "Snake",
+					"name": "ヘビ",
+					"pic": "3ae358357d1f501af7cad1b0a1859d29",
+					"image": "../../../../assets/images/enemies/pipo-enemy003.png",
+					"hp": 200,
+					"direction": 0,
+					"block": 4,
+					"count": 3,
+					"ap": 1,
+					"yoffset": 16,
+					"extval": 9
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "levels",
+			"columns": [
+				{
+					"typeStr": "3",
+					"name": "level"
+				},
+				{
+					"typeStr": "8",
+					"name": "blocks"
+				},
+				{
+					"typeStr": "13",
+					"name": "tmx",
+					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "enemies",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"enemies": [
+						{
+							"enemy": "Snake"
+						},
+						{
+							"enemy": "Bat"
+						},
+						{
+							"enemy": "BatRed"
+						},
+						{
+							"enemy": "Slime"
+						},
+						{
+							"enemy": "Snake"
+						}
+					],
+					"level": 1,
+					"blocks": [
+						{
+							"number": 2
+						},
+						{
+							"number": 5
+						}
+					],
+					"tmx": "../../../../assets/data/900.tmx"
+				},
+				{
+					"level": 2,
+					"blocks": [
+						{
+							"number": 2
+						},
+						{
+							"number": 5
+						}
+					],
+					"tmx": "../../../../assets/data/900.tmx",
+					"enemies": [
+						{
+							"enemy": "Slime"
+						}
+					]
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "levels@enemies",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:enemies",
+					"name": "enemy",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "levels@blocks",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "3",
+					"name": "number"
+				}
+			]
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}
