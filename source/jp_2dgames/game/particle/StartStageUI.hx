@@ -14,7 +14,7 @@ import jp_2dgames.game.global.Global;
  **/
 class StartStageUI extends FlxSpriteGroup {
 
-  static inline var FONTSIZE:Int = 32;
+  static inline var FONTSIZE:Int = 12;
 
   static var _instance:StartStageUI = null;
   public static function createInstance(state:FlxState):Void {
@@ -40,7 +40,7 @@ class StartStageUI extends FlxSpriteGroup {
   public function new():Void {
     super();
     // テキスト
-    _txt = new FlxText(0, FlxG.height*0.4, FlxG.width);
+    _txt = new FlxText(0, FlxG.height*0.3, FlxG.width);
     _txt.setFormat(null, FONTSIZE, FlxColor.WHITE, "center", FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
     if(Global.level == Global.MAX_LEVEL) {
       _txt.text = "FINAL STAGE";
@@ -70,7 +70,7 @@ class StartStageUI extends FlxSpriteGroup {
     var px = 0;
     _txt.x = -FlxG.width*0.75;
     FlxTween.tween(_txt, {x:px}, 1, {ease:FlxEase.expoOut, onComplete:function(_) {
-      var px2 = FlxG.width * 0.8;
+      var px2 = FlxG.width;
       FlxTween.tween(_txt, {x:px2}, 1, {ease:FlxEase.expoIn, onComplete:function(_) {
         // おしまい
         _tween = null;

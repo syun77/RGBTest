@@ -1,5 +1,8 @@
 package jp_2dgames.game.state;
 
+import flixel.util.FlxColor;
+import flixel.FlxSprite;
+import flixel.addons.ui.FlxUIState;
 import jp_2dgames.lib.MyShake;
 import flixel.addons.transition.FlxTransitionableState;
 import jp_2dgames.game.particle.StartStageUI;
@@ -25,7 +28,7 @@ private enum State {
 /**
  * メインゲーム画面
  **/
-class PlayState extends FlxTransitionableState {
+class PlayState extends FlxUIState {
 
   // ---------------------------------------
   // ■フィールド
@@ -46,8 +49,15 @@ class PlayState extends FlxTransitionableState {
     ParticleBmpFont.createParent(this);
     StartStageUI.createInstance(this);
 
+    var question = new FlxSprite(32, 32).makeGraphic(128*2, 32, FlxColor.BLUE);
+    super.add(question);
+
     // シーケンス管理生成
     _seq = new SeqMgr();
+
+    // UI ファイル読み込み
+    _xml_id = "main";
+    super.create();
   }
 
   /**
