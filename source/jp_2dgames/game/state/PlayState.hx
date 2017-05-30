@@ -1,5 +1,8 @@
 package jp_2dgames.game.state;
 
+import flixel.addons.ui.FlxUICheckBox;
+import flixel.addons.ui.FlxUIRadioGroup;
+import flixel.addons.ui.interfaces.IFlxUIWidget;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxUIState;
@@ -33,8 +36,17 @@ class PlayState extends FlxUIState {
   // ---------------------------------------
   // ■フィールド
   var _state:State = State.Init;
-
   var _seq:SeqMgr;
+  var _radioRed:FlxUIRadioGroup;
+  var _radioGreen:FlxUIRadioGroup;
+  var _radioBlue:FlxUIRadioGroup;
+  var _answerRed:Array<Int> = new Array<Int>();
+  var _answerGreen:Array<Int> = new Array<Int>();
+  var _answerBlue:Array<Int> = new Array<Int>();
+  var _question:FlxColor;
+  var _questionRed:Int;
+  var _questionGreen:Int;
+  var _questionBlue:Int;
 
   /**
    * 生成
@@ -49,7 +61,8 @@ class PlayState extends FlxUIState {
     ParticleBmpFont.createParent(this);
     StartStageUI.createInstance(this);
 
-    var question = new FlxSprite(32, 32).makeGraphic(128*2, 32, FlxColor.BLUE);
+    _makeQuestion();
+    var question = new FlxSprite(32, 32).makeGraphic(128*2, 32, _question);
     super.add(question);
 
     // シーケンス管理生成
@@ -58,6 +71,86 @@ class PlayState extends FlxUIState {
     // UI ファイル読み込み
     _xml_id = "main";
     super.create();
+
+    // ラジオボタンを保存
+    _ui.forEachOfType(IFlxUIWidget, function(widget:IFlxUIWidget) {
+      switch(widget.name) {
+        case "radio_red":
+          _radioRed = cast widget;
+        case "radio_green":
+          _radioGreen = cast widget;
+        case "radio_blue":
+          _radioBlue = cast widget;
+      }
+    });
+
+    _makeAnswer();
+
+    // TODO:
+    _updateRadio();
+  }
+
+  function _makeQuestion():Void {
+    var tbl = [
+      FlxColor.GREEN,
+      FlxColor.LIME,
+      FlxColor.YELLOW,
+      FlxColor.ORANGE,
+      FlxColor.RED,
+      FlxColor.PURPLE,
+      FlxColor.BLUE,
+      FlxColor.BROWN,
+      FlxColor.PINK,
+      FlxColor.MAGENTA,
+      FlxColor.CYAN,
+    ];
+
+    FlxG.random.shuffleArray(tbl, 3);
+
+    _question = new FlxColor(tbl[0]);
+    _questionRed = _question.red;
+    _questionGreen = _question.green;
+    _questionBlue = _question.blue;
+  }
+
+  /**
+   * 回答作成
+   **/
+  function _makeAnswer():Void {
+    _answerRed = _makeAnswer2(_questionRed);
+    _answerGreen = _makeAnswer2(_questionGreen);
+    _answerBlue = _makeAnswer2(_questionBlue);
+  }
+  function _makeAnswer2(answer:Int):Array<Int> {
+    var ret = new Array<Int>();
+    var val:Int = FlxG.random.int(0, 0xFF);
+    for(i in 0...3) {
+      if(val == answer) {
+        val += 32 + FlxG.random.int(0, 0x80);
+      }
+      if(val > 0xFF) {
+        val -= 0xFF;
+      }
+      ret.push(val);
+      val += 64 + FlxG.random.int(0, 0x40);
+      if(val > 0xFF) {
+        val -= 0xFF;
+      }
+    }
+    ret[0] = answer;
+    FlxG.random.shuffle(ret);
+    return ret;
+  }
+
+  /**
+   * ラジオボタンの項目を更新する
+   **/
+  function _updateRadio():Void {
+    for(i in 0...3) {
+      _radioRed.getRadios()[i].text = '${_answerRed[i]}';
+      _radioGreen.getRadios()[i].text = '${_answerGreen[i]}';
+      _radioBlue.getRadios()[i].text = '${_answerBlue[i]}';
+    }
   }
 
   /**
@@ -71,6 +164,22 @@ class PlayState extends FlxUIState {
     StartStageUI.destroyInstance();
 
     super.destroy();
+  }
+
+  /**
+   * UIWidgetのコールバック受け取り
+   **/
+  public override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void {
+    var widget:IFlxUIWidget = cast sender;
+    if(widget != null) {
+      if(Std.is(widget, FlxUIRadioGroup)) {
+        var radio:FlxUIRadioGroup = cast widget;
+        switch(id) {
+          case FlxUIRadioGroup.CLICK_EVENT:
+            trace("選択した項目の番号は", radio.selectedIndex, "です", "name=", radio.name);
+        }
+      }
+    }
   }
 
   /**

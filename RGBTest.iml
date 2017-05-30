@@ -14,7 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/source" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/assets" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Haxe 3.2.1" jdkType="Haxe toolkit" />
+    <orderEntry type="jdk" jdkName="Haxe 3.2.0" jdkType="Haxe toolkit" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="haxelib|openfl">
@@ -27,61 +27,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library name="haxelib|/Users/syun/Library/haxelib/flixel/4,2,0">
-        <CLASSES>
-          <root url="file://$USER_HOME$/Library/haxelib/flixel/4,2,0" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$USER_HOME$/Library/haxelib/flixel/4,2,0" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="haxelib|/Users/syun/Library/haxelib/openfl/3,6,1">
-        <CLASSES>
-          <root url="file://$USER_HOME$/Library/haxelib/openfl/3,6,1" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$USER_HOME$/Library/haxelib/openfl/3,6,1" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="haxelib|/Users/syun/Library/haxelib/lime/2,9,1">
-        <CLASSES>
-          <root url="file://$USER_HOME$/Library/haxelib/lime/2,9,1" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$USER_HOME$/Library/haxelib/lime/2,9,1" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="haxelib|/Users/syun/Library/haxelib/hscript/2,0,7">
-        <CLASSES>
-          <root url="file://$USER_HOME$/Library/haxelib/hscript/2,0,7" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$USER_HOME$/Library/haxelib/hscript/2,0,7" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="haxelib|/Users/syun/Library/haxelib/openfl/3,6,1/extern">
-        <CLASSES>
-          <root url="file://$USER_HOME$/Library/haxelib/openfl/3,6,1/extern" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$USER_HOME$/Library/haxelib/openfl/3,6,1/extern" />
-        </SOURCES>
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="2,2,0" level="project" />
+    <orderEntry type="library" name="4,2,0" level="project" />
   </component>
 </module>

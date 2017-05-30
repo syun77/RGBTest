@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+<!-- 文字の定義 -->
+<definition id="sans" size="16" style="bold" color="0xffffff" outline="0x000000" align="center"/>
+<!-- ラジオボタンの定義 -->
+<definition id="radio_1">
+  <text>
+    <color id="over" value="0xffff00" />
+  </text>
+</definition>
+
+
+<!-- R成分 -->
+<text id="red_title" use_def="sans" x="-20" y="96" width="120" text="RED" align="center" />
+<radio_group x="30" y="120" use_def="radio_1" id="radio_red">
+    <!-- クリックしたときのパラメータ -->
+    <param type="string" value="radio_group" />
+    <radio id="radio0" label="Class1" /> <!-- 1つめのラジオボタン -->
+    <radio id="radio1" label="Class2" /> <!-- 2つめのラジオボタン -->
+    <radio id="radio2" label="Class3" /> <!-- 3つめのラジオボタン -->
+</radio_group>
+
+<!-- G成分 -->
+<text id="green_title" use_def="sans" x="80" y="96" width="120" text="GREEN" align="center" />
+<radio_group x="120" y="120" use_def="radio_1" id="radio_green">
+    <!-- クリックしたときのパラメータ -->
+    <param type="string" value="radio_group" />
+    <radio id="radio0" label="Class1" /> <!-- 1つめのラジオボタン -->
+    <radio id="radio1" label="Class2" /> <!-- 2つめのラジオボタン -->
+    <radio id="radio2" label="Class3" /> <!-- 3つめのラジオボタン -->
+</radio_group>
+
+<!-- B成分 -->
+<text id="blue_title" use_def="sans" x="180" y="96" width="120" text="BLUE" align="center" />
+<radio_group x="210" y="120" use_def="radio_1" id="radio_blue">
+    <!-- クリックしたときのパラメータ -->
+    <param type="string" value="radio_group" />
+    <radio id="radio0" label="Class1" /> <!-- 1つめのラジオボタン -->
+    <radio id="radio1" label="Class2" /> <!-- 2つめのラジオボタン -->
+    <radio id="radio2" label="Class3" /> <!-- 3つめのラジオボタン -->
+</radio_group>
+
+</data>
