@@ -1,5 +1,6 @@
 package jp_2dgames.game.state;
 
+import flixel.text.FlxText;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIRadioGroup;
 import flixel.addons.ui.interfaces.IFlxUIWidget;
@@ -40,13 +41,19 @@ class PlayState extends FlxUIState {
   var _radioRed:FlxUIRadioGroup;
   var _radioGreen:FlxUIRadioGroup;
   var _radioBlue:FlxUIRadioGroup;
-  var _answerRed:Array<Int> = new Array<Int>();
-  var _answerGreen:Array<Int> = new Array<Int>();
-  var _answerBlue:Array<Int> = new Array<Int>();
+  var _answerRedArray:Array<Int> = new Array<Int>();
+  var _answerGreenArray:Array<Int> = new Array<Int>();
+  var _answerBlueArray:Array<Int> = new Array<Int>();
   var _question:FlxColor;
   var _questionRed:Int;
   var _questionGreen:Int;
   var _questionBlue:Int;
+  var _answerRed:Int = 0;
+  var _answerGreen:Int = 0;
+  var _answerBlue:Int = 0;
+
+  var _sprQuestion:FlxSprite; // 問題スプライト
+  var _sprAnswer:FlxSprite; // 答えスプライト
 
   /**
    * 生成
@@ -61,9 +68,15 @@ class PlayState extends FlxUIState {
     ParticleBmpFont.createParent(this);
     StartStageUI.createInstance(this);
 
+    // 問題作席
     _makeQuestion();
-    var question = new FlxSprite(32, 32).makeGraphic(128*2, 32, _question);
-    super.add(question);
+
+    // スプライト作成
+    _sprQuestion = new FlxSprite(32, 32).makeGraphic(128*2, 32, _question);
+    super.add(_sprQuestion);
+    _sprAnswer = new FlxSprite(32, 200).makeGraphic(128*2, 16);
+    _sprAnswer.color = FlxColor.BLACK;
+    super.add(_sprAnswer);
 
     // シーケンス管理生成
     _seq = new SeqMgr();
@@ -90,6 +103,9 @@ class PlayState extends FlxUIState {
     _updateRadio();
   }
 
+  /**
+   * 問題の作成
+   **/
   function _makeQuestion():Void {
     var tbl = [
       FlxColor.GREEN,
@@ -117,9 +133,9 @@ class PlayState extends FlxUIState {
    * 回答作成
    **/
   function _makeAnswer():Void {
-    _answerRed = _makeAnswer2(_questionRed);
-    _answerGreen = _makeAnswer2(_questionGreen);
-    _answerBlue = _makeAnswer2(_questionBlue);
+    _answerRedArray = _makeAnswer2(_questionRed);
+    _answerGreenArray = _makeAnswer2(_questionGreen);
+    _answerBlueArray = _makeAnswer2(_questionBlue);
   }
   function _makeAnswer2(answer:Int):Array<Int> {
     var ret = new Array<Int>();
@@ -147,9 +163,9 @@ class PlayState extends FlxUIState {
    **/
   function _updateRadio():Void {
     for(i in 0...3) {
-      _radioRed.getRadios()[i].text = '${_answerRed[i]}';
-      _radioGreen.getRadios()[i].text = '${_answerGreen[i]}';
-      _radioBlue.getRadios()[i].text = '${_answerBlue[i]}';
+      _radioRed.getRadios()[i].text = '${_answerRedArray[i]}';
+      _radioGreen.getRadios()[i].text = '${_answerGreenArray[i]}';
+      _radioBlue.getRadios()[i].text = '${_answerBlueArray[i]}';
     }
   }
 
@@ -176,6 +192,17 @@ class PlayState extends FlxUIState {
         var radio:FlxUIRadioGroup = cast widget;
         switch(id) {
           case FlxUIRadioGroup.CLICK_EVENT:
+            switch(radio.name) {
+              case "radio_red":
+                _answerRed = _answerRedArray[radio.selectedIndex];
+                trace(_answerRed);
+              case "radio_green":
+                _answerGreen = _answerGreenArray[radio.selectedIndex];
+                trace(_answerGreen);
+              case "radio_blue":
+                _answerBlue = _answerBlueArray[radio.selectedIndex];
+                trace(_answerBlue);
+            }
             trace("選択した項目の番号は", radio.selectedIndex, "です", "name=", radio.name);
         }
       }
@@ -215,16 +242,49 @@ class PlayState extends FlxUIState {
   }
 
   /**
+   * 答えの色
+   **/
+  function _getAnswer():UInt {
+    return (0xFF << 24) | (_answerRed << 16) | (_answerGreen << 8) | (_answerBlue);
+  }
+
+  /**
    * 更新・初期化
    **/
   function _updateInit():Void {
+    _txtQuestion = new FlxText(0, 0);
+    _txtAnsower = new FlxText(0, 16);
+    this.add(_txtQuestion);
+    this.add(_txtAnsower);
   }
+
+  var _txtQuestion:FlxText;
+  var _txtAnsower:FlxText;
 
   /**
    * 更新・メイン
    **/
   function _updateMain():Void {
 
+    // 答えの色更新
+    _sprAnswer.color = _getAnswer();
+
+    _txtQuestion.text = 'Question = ${_sprQuestion.color}';
+    _txtAnsower.text = 'Ansoer = ${_sprAnswer.color}';
+
+    var r1 = _questionRed;
+    var g1 = _questionGreen;
+    var b1 = _questionBlue;
+    var r2 = _answerRed;
+    var g2 = _answerGreen;
+    var b2 = _answerBlue;
+
+    if(r1 == r2 && g1 == g2 && b1 == b2) {
+      // 正解
+      _state = State.LevelCompleted;
+    }
+
+    /*
     switch(_seq.proc()) {
       case SeqMgr.RET_DEAD:
         // ゲームオーバー
@@ -236,6 +296,7 @@ class PlayState extends FlxUIState {
         _state = State.LevelCompleted;
         Snd.stopMusic(1);
     }
+    */
   }
 
   /**
