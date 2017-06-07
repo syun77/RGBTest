@@ -1,5 +1,6 @@
 package jp_2dgames.game.state;
 
+import jp_2dgames.lib.TextUtil;
 import flixel.text.FlxText;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIRadioGroup;
@@ -54,6 +55,7 @@ class PlayState extends FlxUIState {
 
   var _sprQuestion:FlxSprite; // 問題スプライト
   var _sprAnswer:FlxSprite; // 答えスプライト
+  var _txtTime:FlxText; // 残り時間テキスト
 
   /**
    * 生成
@@ -74,6 +76,10 @@ class PlayState extends FlxUIState {
     _sprAnswer = new FlxSprite(32, 200).makeGraphic(128*2, 16);
     _sprAnswer.color = FlxColor.BLACK;
     super.add(_sprAnswer);
+
+    // テキスト生成
+    _txtTime = new FlxText(4, 4, 0, "");
+    super.add(_txtTime);
 
     // シーケンス管理生成
     _seq = new SeqMgr();
@@ -212,6 +218,9 @@ class PlayState extends FlxUIState {
   override public function update(elapsed:Float):Void {
     super.update(elapsed);
 
+    // 残り時間更新
+    _txtTime.text = 'TIME: ${Math.floor(Global.time)}';
+
     switch(_state) {
       case State.Init:
         // ゲーム開始
@@ -219,7 +228,7 @@ class PlayState extends FlxUIState {
         _state = State.Main;
 
       case State.Main:
-        _updateMain();
+        _updateMain(elapsed);
 
       case State.DeadWait:
         // 死亡演出終了待ち
@@ -256,25 +265,15 @@ class PlayState extends FlxUIState {
    * 更新・初期化
    **/
   function _updateInit():Void {
-    _txtQuestion = new FlxText(0, 0);
-    _txtAnsower = new FlxText(0, 16);
-    this.add(_txtQuestion);
-    this.add(_txtAnsower);
   }
-
-  var _txtQuestion:FlxText;
-  var _txtAnsower:FlxText;
 
   /**
    * 更新・メイン
    **/
-  function _updateMain():Void {
+  function _updateMain(elapsed:Float):Void {
 
     // 答えの色更新
     _sprAnswer.color = _getAnswer();
-
-    _txtQuestion.text = 'Question = ${_sprQuestion.color}';
-    _txtAnsower.text = 'Ansoer = ${_sprAnswer.color}';
 
     var r1 = _questionRed;
     var g1 = _questionGreen;
@@ -286,6 +285,12 @@ class PlayState extends FlxUIState {
     if(r1 == r2 && g1 == g2 && b1 == b2) {
       // 正解
       _state = State.LevelCompleted;
+      return;
+    }
+
+    // 制限時間を減らす
+    if(Global.decTime(elapsed) == false) {
+      // 時間切れ
     }
 
     /*
