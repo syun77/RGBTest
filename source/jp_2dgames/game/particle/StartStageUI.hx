@@ -56,11 +56,11 @@ class StartStageUI extends FlxSpriteGroup {
    **/
   function _start():Void {
     // ステージ開始演出
-    if(Global.stage >= Global.maxStage - 1) {
+    if(Global.level >= Global.maxLevel) {
       _txt.text = 'FINAL STAGE';
     }
     else {
-      _txt.text = 'STAGE ${Global.stage+1}/${Global.maxStage}';
+      _txt.text = 'STAGE ${Global.level}/${Global.maxLevel}';
     }
 
     if(_tween != null) {

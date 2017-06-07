@@ -11,6 +11,7 @@ class PlayInitState extends FlxTransitionableState {
     super.create();
 
     Global.initGame();
+    Global.startLevel(0);
   }
 
   override public function destroy():Void {

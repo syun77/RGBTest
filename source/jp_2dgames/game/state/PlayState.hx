@@ -60,9 +60,6 @@ class PlayState extends FlxUIState {
    **/
   override public function create():Void {
 
-    // 初期化
-    Global.startLevel(1);
-
     // パーティクル生成
     Particle.createParent(this);
     ParticleBmpFont.createParent(this);
@@ -232,8 +229,15 @@ class PlayState extends FlxUIState {
 
       case State.LevelCompleted:
         // レベルクリア
-        // TODO: タイトル画面に戻る
-        FlxG.switchState(new EndingState());
+        if(Global.nextLevel()) {
+          // 全レベルクリア
+          // TODO: タイトル画面に戻る
+          FlxG.switchState(new EndingState());
+        }
+        else {
+          // 次のレベルに進む
+          FlxG.switchState((new PlayState()));
+        }
     }
 
     #if debug
