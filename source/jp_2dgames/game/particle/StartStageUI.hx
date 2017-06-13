@@ -42,7 +42,7 @@ class StartStageUI extends FlxSpriteGroup {
     // テキスト
     _txt = new FlxText(0, FlxG.height*0.3, FlxG.width);
     _txt.setFormat(null, FONTSIZE, FlxColor.WHITE, "center", FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-    if(Global.level == Global.MAX_LEVEL) {
+    if(Global.level == Global.maxLevel) {
       _txt.text = "FINAL STAGE";
     }
 

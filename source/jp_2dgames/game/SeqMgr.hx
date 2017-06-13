@@ -63,7 +63,7 @@ class SeqMgr {
   function _procInit():State {
 
     // 開始演出
-    StartStageUI.start();
+    //StartStageUI.start();
 
     return State.Main;
   }

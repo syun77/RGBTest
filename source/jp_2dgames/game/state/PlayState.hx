@@ -36,6 +36,11 @@ private enum State {
 class PlayState extends FlxUIState {
 
   // ---------------------------------------
+  // ■定数
+  // レベルクリア時の待ち時間
+  static inline var TIMER_LEVEL_COMPLETED:Float = 1.0;
+
+  // ---------------------------------------
   // ■フィールド
   var _state:State = State.Init;
   var _seq:SeqMgr;
@@ -53,9 +58,16 @@ class PlayState extends FlxUIState {
   var _answerGreen:Int = 0;
   var _answerBlue:Int = 0;
 
+  var _countClicked:Int = 0; // クリック回数
+  var _wait:Float = 0.0; // 停止タイマー
+
   var _sprQuestion:FlxSprite; // 問題スプライト
   var _sprAnswer:FlxSprite; // 答えスプライト
+  var _sprResult:FlxSprite; // 結果背景
+  var _txtScore:FlxText; // スコア
   var _txtTime:FlxText; // 残り時間テキスト
+  var _txtResult:FlxText; // 結果テキスト
+  var _txtBonus:FlxText; // 結果ボーナス
 
   /**
    * 生成
@@ -71,14 +83,16 @@ class PlayState extends FlxUIState {
     _makeQuestion();
 
     // スプライト作成
-    _sprQuestion = new FlxSprite(32, 32).makeGraphic(128*2, 32, _question);
+    _sprQuestion = new FlxSprite(96, 24).makeGraphic(64*2, 32, _question);
     super.add(_sprQuestion);
-    _sprAnswer = new FlxSprite(32, 200).makeGraphic(128*2, 16);
+    _sprAnswer = new FlxSprite(96, 168).makeGraphic(64*2, 32);
     _sprAnswer.color = FlxColor.BLACK;
     super.add(_sprAnswer);
 
     // テキスト生成
-    _txtTime = new FlxText(4, 4, 0, "");
+    _txtScore = new FlxText(4, 4, 0, "");
+    super.add(_txtScore);
+    _txtTime = new FlxText(4, 20, 0, "");
     super.add(_txtTime);
 
     // シーケンス管理生成
@@ -104,29 +118,25 @@ class PlayState extends FlxUIState {
 
     // TODO:
     _updateRadio();
+
+    // リザルト
+    _sprResult = new FlxSprite(0, FlxG.height/2-40).makeGraphic(FlxG.width, 80, FlxColor.BLACK);
+    _sprResult.alpha = 0.7;
+    _sprResult.visible = false;
+    //this.add(_sprResult);
+    _txtResult = new FlxText(0, FlxG.height-32, FlxG.width, "", 16);
+    _txtResult.alignment = FlxTextAlign.CENTER; // 中央揃え
+    super.add(_txtResult);
+    _txtBonus = new FlxText(0, FlxG.height-32, FlxG.width, "");
+    super.add(_txtBonus);
   }
 
   /**
    * 問題の作成
    **/
   function _makeQuestion():Void {
-    var tbl = [
-      FlxColor.GREEN,
-      FlxColor.LIME,
-      FlxColor.YELLOW,
-      FlxColor.ORANGE,
-      FlxColor.RED,
-      FlxColor.PURPLE,
-      FlxColor.BLUE,
-      FlxColor.BROWN,
-      FlxColor.PINK,
-      FlxColor.MAGENTA,
-      FlxColor.CYAN,
-    ];
 
-    FlxG.random.shuffleArray(tbl, 3);
-
-    _question = new FlxColor(tbl[0]);
+    _question = new FlxColor(Global.getQuestionColor());
     _questionRed = _question.red;
     _questionGreen = _question.green;
     _questionBlue = _question.blue;
@@ -199,12 +209,15 @@ class PlayState extends FlxUIState {
               case "radio_red":
                 _answerRed = _answerRedArray[radio.selectedIndex];
                 trace(_answerRed);
+                _countClicked++;
               case "radio_green":
                 _answerGreen = _answerGreenArray[radio.selectedIndex];
                 trace(_answerGreen);
+                _countClicked++;
               case "radio_blue":
                 _answerBlue = _answerBlueArray[radio.selectedIndex];
                 trace(_answerBlue);
+                _countClicked++;
             }
             trace("選択した項目の番号は", radio.selectedIndex, "です", "name=", radio.name);
         }
@@ -220,6 +233,8 @@ class PlayState extends FlxUIState {
 
     // 残り時間更新
     _txtTime.text = 'TIME: ${Math.floor(Global.time)}';
+    // スコア
+    _txtScore.text = 'SCORE: ${Global.score}';
 
     switch(_state) {
       case State.Init:
@@ -238,6 +253,11 @@ class PlayState extends FlxUIState {
 
       case State.LevelCompleted:
         // レベルクリア
+        _wait -= elapsed;
+        if(_wait > 0) {
+          return;
+        }
+
         if(Global.nextLevel()) {
           // 全レベルクリア
           // TODO: タイトル画面に戻る
@@ -252,6 +272,31 @@ class PlayState extends FlxUIState {
     #if debug
     _updateDebug();
     #end
+  }
+
+  /**
+   * ボーナススコアを計算する
+   **/
+  function _calcBonus():Int {
+    var val = 100 * (10 - _countClicked);
+    if(val < 0) {
+      return 0;
+    }
+
+    return val;
+  }
+
+  /**
+   * リザルトテキストの設定
+   **/
+  function _setResult():Void {
+    var val = _calcBonus();
+    var base = 1000; // 基本スコア
+    var score = base + val;
+    _sprResult.visible = true;
+    _txtResult.text = 'GREAT +${score}';
+    Global.addScore(score);
+    _txtResult.visible = true;
   }
 
   /**
@@ -284,7 +329,9 @@ class PlayState extends FlxUIState {
 
     if(r1 == r2 && g1 == g2 && b1 == b2) {
       // 正解
+      _setResult();
       _state = State.LevelCompleted;
+      _wait = TIMER_LEVEL_COMPLETED; // 3秒待つ
       return;
     }
 
