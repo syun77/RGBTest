@@ -66,8 +66,10 @@ class PlayState extends FlxUIState {
   var _sprResult:FlxSprite; // 結果背景
   var _txtScore:FlxText; // スコア
   var _txtTime:FlxText; // 残り時間テキスト
+  var _txtStage:FlxText; // ステージ番号テキスト
   var _txtResult:FlxText; // 結果テキスト
   var _txtBonus:FlxText; // 結果ボーナス
+  var _txtHint:FlxText; // ヒント
 
   /**
    * 生成
@@ -84,16 +86,28 @@ class PlayState extends FlxUIState {
 
     // スプライト作成
     _sprQuestion = new FlxSprite(96, 24).makeGraphic(64*2, 32, _question);
-    super.add(_sprQuestion);
+    this.add(_sprQuestion);
     _sprAnswer = new FlxSprite(96, 168).makeGraphic(64*2, 32);
     _sprAnswer.color = FlxColor.BLACK;
-    super.add(_sprAnswer);
+    this.add(_sprAnswer);
 
     // テキスト生成
     _txtScore = new FlxText(4, 4, 0, "");
-    super.add(_txtScore);
+    this.add(_txtScore);
     _txtTime = new FlxText(4, 20, 0, "");
-    super.add(_txtTime);
+    this.add(_txtTime);
+    _txtStage = new FlxText(4, 36, 0, "");
+    this.add(_txtStage);
+    _txtHint = new FlxText(0, 12, FlxG.width);
+    _txtHint.alignment = FlxTextAlign.CENTER; // 中央揃え
+    var red = TextUtil.toHex(_question.red, true, 2);
+    var green = TextUtil.toHex(_question.green, true, 2);
+    var blue = TextUtil.toHex(_question.blue, true, 2);
+    trace(_question.red, _question.green, _question.blue);
+    trace(red, green, blue);
+    _txtHint.text = '0x${red}${green}${blue}';
+    _txtHint.visible = false;
+    this.add(_txtHint);
 
     // シーケンス管理生成
     _seq = new SeqMgr();
@@ -220,6 +234,11 @@ class PlayState extends FlxUIState {
                 _countClicked++;
             }
             trace("選択した項目の番号は", radio.selectedIndex, "です", "name=", radio.name);
+
+            if(_countClicked >= 5) {
+              // ヒント表示
+              _txtHint.visible = true;
+            }
         }
       }
     }
@@ -235,6 +254,8 @@ class PlayState extends FlxUIState {
     _txtTime.text = 'TIME: ${Math.floor(Global.time)}';
     // スコア
     _txtScore.text = 'SCORE: ${Global.score}';
+    // ステージ数
+    _txtStage.text = 'STAGE: ${Global.level+1} / ${Global.maxLevel+1}';
 
     switch(_state) {
       case State.Init:

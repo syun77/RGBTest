@@ -43,5 +43,43 @@ class TextUtil {
     return fillZero(hour, 2) + ":" + fillZero(minute, 2) + ":" + fillZero(second, 2);
   }
 
+  /**
+   * 16進数に変換した文字を返す
+   * @param dec 変換する数値
+   * @param bUpper 大文字にするかどうか
+   * @param digit 0埋めの桁数
+   * @return 変換後の文字列
+   **/
+  public static function toHex(dec:Int, bUpper:Bool=true, digit:Int=0):String {
+    var str = "";
+    var v = dec;
+    while(v > 0) {
+      var upper = (v >> 4) << 4;
+      var lower = v - upper;
+      if(lower < 10) {
+        // 9以下はそのまま
+        str = '${lower}' + str;
+      }
+      else {
+        var tbl = ['A', 'B', 'C', 'D', 'E', 'F'];
+        if(bUpper) {
+          // 大文字を使う
+          str = tbl[lower - 10] + str;
+          trace("upper:", upper, " lower:", lower, " str:", str);
+        }
+        else {
+          // 小文字を使う
+          str = tbl[lower - 10].toLowerCase() + str;
+        }
+      }
+      v = (upper >> 4);
+    }
+
+    if(digit > 0) {
+      str = StringTools.lpad(str, '0', digit);
+    }
+    return str;
+  }
+
 }
 

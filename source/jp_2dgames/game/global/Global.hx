@@ -31,6 +31,13 @@ class Global {
       FlxColor.CYAN,
     ];
 
+    _questionTbl.push(FlxColor.fromRGB(
+      FlxG.random.int(0, 0xFF),
+      FlxG.random.int(0, 0xFF),
+      FlxG.random.int(0, 0xFF),
+      0xFF
+    ));
+
     FlxG.random.shuffleArray(_questionTbl, 3);
   }
 
