@@ -29,6 +29,7 @@ class Global {
       FlxColor.PINK,
       FlxColor.MAGENTA,
       FlxColor.CYAN,
+      FlxColor.WHITE,
     ];
 
     _questionTbl.push(FlxColor.fromRGB(
@@ -39,6 +40,8 @@ class Global {
     ));
 
     FlxG.random.shuffleArray(_questionTbl, 3);
+
+    _questionTbl = [FlxColor.WHITE];
   }
 
   public static function getQuestionColor():Int {
@@ -70,7 +73,7 @@ class Global {
    **/
   public static function nextLevel():Bool {
     _level++;
-    if(_level > maxLevel) {
+    if(_level >= maxLevel) {
       // 全レベルクリア
       return true;
     }
@@ -90,6 +93,6 @@ class Global {
   public static var time(get, never):Float;
   static function get_level() { return _level; }
   static function get_score() { return _score; }
-  static function get_maxLevel() { return _questionTbl.length; }
+  static function get_maxLevel() { return _questionTbl.length - 1; }
   static function get_time() { return _time; }
 }

@@ -45,6 +45,7 @@ class StartStageUI extends FlxSpriteGroup {
     if(Global.level == Global.maxLevel) {
       _txt.text = "FINAL STAGE";
     }
+    _txt.visible = false;
 
     this.add(_txt);
 

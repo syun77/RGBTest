@@ -1,4 +1,5 @@
 package jp_2dgames.game.state;
+import jp_2dgames.game.global.Global;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.ui.FlxButton;
 import flixel.text.FlxText;
@@ -14,13 +15,27 @@ class EndingState extends FlxTransitionableState {
   override public function create():Void {
     super.create();
 
-    var txt = new FlxText(0, 64, FlxG.width, "Congratulation!", FONT_SIZE * 3);
+    var txt = new FlxText(0, 32, FlxG.width, "Congratulation!", FONT_SIZE * 3);
     txt.setBorderStyle(FlxTextBorderStyle.OUTLINE, 2);
     txt.alignment = "center";
     this.add(txt);
-    var msg = new FlxText(0, 128, FlxG.width, "completed all of the levels.", FONT_SIZE);
-    msg.alignment = "center";
-    this.add(msg);
+    if(Global.level >= Global.maxLevel) {
+      // 全ステージクリア時
+      var msg = new FlxText(0, 80, FlxG.width, "completed all of the levels.", FONT_SIZE);
+      // ボーナス加算
+      var bonus:Int = Math.floor(Global.time) * 100;
+      if(bonus > 0) {
+        msg.text += '\n\nBonus: +${bonus}';
+        Global.addScore(bonus);
+      }
+      msg.alignment = "center";
+      this.add(msg);
+    }
+
+    // 結果スコア
+    var txt2 = new FlxText(0, 128, FlxG.width, 'SCORE: ${Global.score}', FONT_SIZE * 2);
+    txt2.alignment = FlxTextAlign.CENTER;
+    this.add(txt2);
 
     // タイトルに戻るボタン
     var btn = new FlxButton(0, FlxG.height*0.8, "Back to TITLE", function() {
