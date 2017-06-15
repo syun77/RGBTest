@@ -251,7 +251,10 @@ class PlayState extends FlxUIState {
     super.update(elapsed);
 
     // 残り時間更新
-    _txtTime.text = 'TIME: ${Math.floor(Global.time)}';
+    _txtTime.text = 'TIME: ${Math.floor(Global.time * 1000) / 1000}';
+    if(Global.time < 10) {
+      _txtTime.color = FlxColor.RED;
+    }
     // スコア
     _txtScore.text = 'SCORE: ${Global.score}';
     // ステージ数
@@ -271,6 +274,11 @@ class PlayState extends FlxUIState {
 
       case State.Gameover:
         // ゲームオーバー
+        _wait -= elapsed;
+        if(_wait > 0) {
+          return;
+        }
+        FlxG.switchState(new EndingState());
 
       case State.LevelCompleted:
         // レベルクリア
@@ -359,6 +367,10 @@ class PlayState extends FlxUIState {
     // 制限時間を減らす
     if(Global.decTime(elapsed) == false) {
       // 時間切れ
+      _txtResult.text = 'TIME OVER';
+      _txtResult.visible = true;
+      _state = State.Gameover;
+      _wait = TIMER_LEVEL_COMPLETED * 3; // 3秒待つ
     }
 
     /*

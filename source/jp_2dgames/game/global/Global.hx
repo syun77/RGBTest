@@ -41,7 +41,7 @@ class Global {
 
     FlxG.random.shuffleArray(_questionTbl, 3);
 
-    _questionTbl = [FlxColor.WHITE];
+//    _questionTbl = [FlxColor.WHITE];
   }
 
   public static function getQuestionColor():Int {

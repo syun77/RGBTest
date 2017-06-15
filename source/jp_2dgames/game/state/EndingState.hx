@@ -15,7 +15,7 @@ class EndingState extends FlxTransitionableState {
   override public function create():Void {
     super.create();
 
-    var txt = new FlxText(0, 32, FlxG.width, "Congratulation!", FONT_SIZE * 3);
+    var txt = new FlxText(0, 32, FlxG.width, "RESULT", FONT_SIZE * 3);
     txt.setBorderStyle(FlxTextBorderStyle.OUTLINE, 2);
     txt.alignment = "center";
     this.add(txt);

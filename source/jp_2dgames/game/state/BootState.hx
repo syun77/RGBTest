@@ -20,7 +20,8 @@ class BootState extends FlxState {
     MyTransition.create();
 #else
     // トランジション用オブジェクト生成
-    MyTransition.create(48, 48, TransitionGraphicDiamond);
+    var size:Int = 32;
+    MyTransition.create(size, size, TransitionGraphicDiamond);
 #end
   }
 
@@ -34,11 +35,11 @@ class BootState extends FlxState {
     #if flash
     FlxG.switchState(new TitleState());
     #else
-    FlxG.switchState(new PlayInitState());
-//    FlxG.switchState(StartStageUI TitleState());
-//    FlxG.switchState(StartStageUI EndingState());
-//    FlxG.switchState(StartStageUI ResultState());
-//    FlxG.switchState(StartStageUI MakeCharacterState());
+//    FlxG.switchState(new PlayInitState());
+    FlxG.switchState(new TitleState());
+//    FlxG.switchState(new EndingState());
+//    FlxG.switchState(new ResultState());
+//    FlxG.switchState(new MakeCharacterState());
     #end
   }
 }
