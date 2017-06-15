@@ -234,10 +234,12 @@ class PlayState extends FlxUIState {
                 _countClicked++;
             }
             trace("選択した項目の番号は", radio.selectedIndex, "です", "name=", radio.name);
+            Snd.playSe("pi");
 
-            if(_countClicked >= 5) {
+            if(_countClicked == 5) {
               // ヒント表示
               _txtHint.visible = true;
+              Snd.playSe("equip");
             }
         }
       }
@@ -361,6 +363,7 @@ class PlayState extends FlxUIState {
       _setResult();
       _state = State.LevelCompleted;
       _wait = TIMER_LEVEL_COMPLETED; // 3秒待つ
+      Snd.playSe("powerup");
       return;
     }
 
@@ -371,6 +374,7 @@ class PlayState extends FlxUIState {
       _txtResult.visible = true;
       _state = State.Gameover;
       _wait = TIMER_LEVEL_COMPLETED * 3; // 3秒待つ
+      Snd.playSe("enemy");
     }
 
     /*
