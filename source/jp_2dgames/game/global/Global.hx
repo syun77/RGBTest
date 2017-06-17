@@ -32,14 +32,14 @@ class Global {
       FlxColor.WHITE,
     ];
 
+    FlxG.random.shuffle(_questionTbl);
+
     _questionTbl.push(FlxColor.fromRGB(
       FlxG.random.int(0, 0xFF),
       FlxG.random.int(0, 0xFF),
       FlxG.random.int(0, 0xFF),
       0xFF
     ));
-
-    FlxG.random.shuffleArray(_questionTbl, 3);
 
 //    _questionTbl = [FlxColor.WHITE];
   }
@@ -73,7 +73,7 @@ class Global {
    **/
   public static function nextLevel():Bool {
     _level++;
-    if(_level >= maxLevel) {
+    if(_level > maxLevel) {
       // 全レベルクリア
       return true;
     }

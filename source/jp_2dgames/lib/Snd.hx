@@ -14,7 +14,7 @@ class Snd {
   static var _bBgmDisable = false;
 #else
   #if debug
-    static var _bBgmDisable = true;
+    static var _bBgmDisable = false;
   #else
     static var _bBgmDisable = false;
   #end

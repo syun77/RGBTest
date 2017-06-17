@@ -291,8 +291,8 @@ class PlayState extends FlxUIState {
 
         if(Global.nextLevel()) {
           // 全レベルクリア
-          // TODO: タイトル画面に戻る
           FlxG.switchState(new EndingState());
+          Snd.stopMusic();
         }
         else {
           // 次のレベルに進む
@@ -367,6 +367,8 @@ class PlayState extends FlxUIState {
       return;
     }
 
+    var prevTime:Int = Math.floor(Global.time);
+
     // 制限時間を減らす
     if(Global.decTime(elapsed) == false) {
       // 時間切れ
@@ -374,7 +376,14 @@ class PlayState extends FlxUIState {
       _txtResult.visible = true;
       _state = State.Gameover;
       _wait = TIMER_LEVEL_COMPLETED * 3; // 3秒待つ
-      Snd.playSe("enemy");
+      Snd.playSe("explosion");
+      Snd.stopMusic();
+    }
+
+    if(Global.time <= 10) {
+      if(Math.floor(Global.time) < prevTime) {
+        Snd.playSe("countdown");
+      }
     }
 
     /*

@@ -1,4 +1,5 @@
 package jp_2dgames.game.state;
+import jp_2dgames.lib.Snd;
 import flixel.addons.transition.FlxTransitionableState;
 import jp_2dgames.game.global.Global;
 import flixel.FlxG;
@@ -12,6 +13,7 @@ class PlayInitState extends FlxTransitionableState {
 
     Global.initGame();
     Global.startLevel(0);
+    Snd.playMusic("001");
   }
 
   override public function destroy():Void {

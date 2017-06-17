@@ -30,12 +30,22 @@
 	<set name="BUILD_DIR" value="export" />
 	<classpath name="source" />
 	<assets path="assets" />
+	<!-- BGM -->
+	<assets path="assets/music" if="flash" include="*.mp3">
+		<sound path="001.mp3" id="001" />
+	</assets>
+	<assets path="assets/music" unless="flash" include="*.ogg">
+		<sound path="001.ogg" id="001" />
+	</assets>
+
 	<!-- SE -->
 	<assets path="assets/sounds" include="*.wav">
 		<sound path="enemy.wav" id="enemy" />
 		<sound path="powerup.wav" id="powerup" />
 		<sound path="pi.wav" id="pi" />
 		<sound path="equip.wav" id="equip" />
+		<sound path="explosion.wav" id="explosion" />
+		<sound path="countdown.wav" id="countdown" />
 	</assets>
 
 	<!-- _______________________________ Libraries ______________________________ -->
