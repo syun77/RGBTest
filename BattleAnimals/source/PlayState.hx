@@ -36,6 +36,7 @@ class PlayState extends FlxState {
   static inline var TIMER_SCORE:Int = 30; // スコア加算演出用タイマー
   static inline var BASE_BALL_COUNT:Int = 4; // ボールの基本数
   static inline var MAX_BALL_COUNT:Int = 32; // ボールの最大数
+  static inline var TIMER_DELAY:Float = 2.0;
 
   var _state:State = State.Title;
   var _trails:FlxSpriteGroup;
@@ -47,6 +48,7 @@ class PlayState extends FlxState {
   var _time:Float = 0.0;
   var _maxBallCount:Int = BASE_BALL_COUNT; // 最大のボール数
   var _sideTeam:Team = Team.Red; // どちらのチームに登場させたか
+  var _timerDelay:Float = 0;
 
   // 演出
   var _timerRed:Int = 0;
@@ -257,6 +259,17 @@ class PlayState extends FlxState {
   }
 
   function _checkAppearBall():Void {
+
+    if(_timerDelay > 0) {
+      _timerDelay -= FlxG.elapsed;
+      return;
+    }
+
+    if(Math.floor(_time)%2 == 1) {
+      return;
+    }
+
+
     var cnt:Int = 0;
     _balls.forEachAlive(function(b:Ball) {
       cnt++;
@@ -277,6 +290,10 @@ class PlayState extends FlxState {
       }
       b.create(px, py);
       b.team = Team.None;
+
+      // 連続で出現させない
+      _timerDelay = TIMER_DELAY;
+      break;
     }
   }
 
@@ -390,8 +407,9 @@ class PlayState extends FlxState {
         return;
       }
 
-      if(b.x <= touchX && touchX <= b.x + b.width) {
-        if(b.y <= touchY && touchY <= b.y + b.height) {
+      var MARGIN:Float = 32;
+      if(b.x - MARGIN <= touchX && touchX <= b.x + b.width + MARGIN) {
+        if(b.y - MARGIN <= touchY && touchY <= b.y + b.height + MARGIN) {
           if(b.hold == false) {
             // ホールド開始
             b.touch(id, touchX, touchY);
